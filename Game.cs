@@ -30,5 +30,25 @@ namespace SnakeGame
             this.Controls.Add(snake.body[0]);
             snake.body[0].BringToFront();
         }
+
+        private void Game_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.W)
+            {
+                snake.MoveUp();
+            }
+            else if (e.KeyCode == Keys.A)
+            {
+                snake.MoveLeft();
+            }
+            else if (e.KeyCode == Keys.D)
+            {
+                snake.MoveRight();
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                snake.MoveDown();
+            }
+        }
     }
 }
