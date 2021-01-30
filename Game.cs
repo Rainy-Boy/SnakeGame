@@ -14,15 +14,19 @@ namespace SnakeGame
     {
         GameZone gameZone = null;
         Snake snake = null;
+        Timer mainTimer = null;
 
         public Game()
         {
             InitializeComponent();
             InitializeGame();
+            InitializeMainTimer();
         }
 
         private void InitializeGame()
         {
+            this.KeyDown += Game_KeyDown;
+
             gameZone = new GameZone();
             this.Controls.Add(gameZone);
 
@@ -31,23 +35,46 @@ namespace SnakeGame
             snake.body[0].BringToFront();
         }
 
+        private void InitializeMainTimer()
+        {
+            mainTimer = new Timer();
+            mainTimer.Interval = 500;
+            mainTimer.Tick += MainTimer_Tick;
+            mainTimer.Start();
+        }
+
+        private void MainTimer_Tick(object sender, EventArgs e)
+        {
+            snake.body[0].Top += snake.VerVelocity * snake.Step;
+            snake.body[0].Left += snake.HorVelocity * snake.Step;
+        }
+
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
             {
-                snake.MoveUp();
+                snake.HorVelocity = 0;
+                snake.VerVelocity = -1;
             }
             else if (e.KeyCode == Keys.A)
             {
-                snake.MoveLeft();
+                snake.HorVelocity = -1;
+                snake.VerVelocity = 0;
             }
             else if (e.KeyCode == Keys.D)
             {
-                snake.MoveRight();
+                snake.HorVelocity = 1;
+                snake.VerVelocity = 0;
             }
             else if (e.KeyCode == Keys.S)
             {
-                snake.MoveDown();
+                snake.HorVelocity = 0;
+                snake.VerVelocity = 1;
+            }
+            else if (e.KeyCode == Keys.P)
+            {
+                snake.HorVelocity = 0;
+                snake.VerVelocity = 0;
             }
         }
     }

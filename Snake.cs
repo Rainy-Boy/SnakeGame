@@ -12,15 +12,16 @@ namespace SnakeGame
     {
         public List<PictureBox> body = new List<PictureBox>();
 
-        public int HorVelocity { get; set; } = 0;
+        public int Step { get; } = 20;
+        public int HorVelocity { get; set; } = 1;
         public int VerVelocity { get; set; } = 0;
 
-        private Timer timerMove = null;
+        
 
         public Snake()
         {
             InitializeSnake();
-            InitializeTimerMove();
+            
         }
 
         private void InitializeSnake()
@@ -33,37 +34,6 @@ namespace SnakeGame
             pixel.Top = 200;
 
             body.Add(pixel);
-        }
-
-        public void MoveRight()
-        {
-            this.HorVelocity = 2;
-        }
-        public void MoveLeft()
-        {
-            this.HorVelocity = -2;
-        }
-        public void MoveUp()
-        {
-            this.VerVelocity = -2;
-        }
-        public void MoveDown()
-        {
-            this.VerVelocity = 2;
-        }
-
-        private void InitializeTimerMove()
-        {
-            timerMove = new Timer();
-            timerMove.Interval = 10;
-            timerMove.Tick += TimerMove_Tick;
-            timerMove.Start();
-        }
-
-        private void TimerMove_Tick(object sender, EventArgs e)
-        {
-            this.body[0].Left += this.HorVelocity;
-            this.body[0].Top += this.VerVelocity;
         }
     }
 }
