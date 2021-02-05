@@ -13,7 +13,7 @@ namespace SnakeGame
         public List<PictureBox> body = new List<PictureBox>();
 
         public int Step { get; } = 20;
-        public int HorVelocity { get; set; } = 1;
+        public int HorVelocity { get; set; } = 0;
         public int VerVelocity { get; set; } = 0;
 
         

@@ -17,6 +17,8 @@ namespace SnakeGame
         Food food = null;
         Timer mainTimer = null;
 
+        private int snakePixelCounter = 0;
+
         Random rand = new Random();
 
         public Game()
@@ -54,7 +56,7 @@ namespace SnakeGame
         {
             snake.body[0].Top += snake.VerVelocity * snake.Step;
             snake.body[0].Left += snake.HorVelocity * snake.Step;
-            SnakeEnemyCollision();
+            SnakeFoodCollision();
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
@@ -86,13 +88,22 @@ namespace SnakeGame
             }
         }
 
-        private void SnakeEnemyCollision()
+        private void SnakeFoodCollision()
         {
             if (snake.body[0].Bounds.IntersectsWith(food.Bounds))
             {
                 food.Left = rand.Next(40, 420);
                 food.Top = rand.Next(40, 420);
+                snakePixelCounter++;
+                
             }
+        }
+
+        private void AddSnakePixel()
+        {
+            this.Controls.Add(snake.body[snakePixelCounter]);
+            snake.body[snakePixelCounter].Left = snake.body[0].Left;
+            snake.body[snakePixelCounter].Top = snake.body[0].Top - 40;
         }
     }
 }
