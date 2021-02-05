@@ -14,7 +14,10 @@ namespace SnakeGame
     {
         GameZone gameZone = null;
         Snake snake = null;
+        Food food = null;
         Timer mainTimer = null;
+
+        Random rand = new Random();
 
         public Game()
         {
@@ -33,6 +36,10 @@ namespace SnakeGame
             snake = new Snake();
             this.Controls.Add(snake.body[0]);
             snake.body[0].BringToFront();
+
+            food = new Food();
+            this.Controls.Add(food);
+            food.BringToFront();
         }
 
         private void InitializeMainTimer()
@@ -47,6 +54,7 @@ namespace SnakeGame
         {
             snake.body[0].Top += snake.VerVelocity * snake.Step;
             snake.body[0].Left += snake.HorVelocity * snake.Step;
+            SnakeEnemyCollision();
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
@@ -75,6 +83,15 @@ namespace SnakeGame
             {
                 snake.HorVelocity = 0;
                 snake.VerVelocity = 0;
+            }
+        }
+
+        private void SnakeEnemyCollision()
+        {
+            if (snake.body[0].Bounds.IntersectsWith(food.Bounds))
+            {
+                food.Left = rand.Next(40, 420);
+                food.Top = rand.Next(40, 420);
             }
         }
     }
