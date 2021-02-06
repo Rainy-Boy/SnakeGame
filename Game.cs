@@ -17,7 +17,6 @@ namespace SnakeGame
         Food food = null;
         Timer mainTimer = null;
 
-        private int snakePixelCounter = 0;
 
         Random rand = new Random();
 
@@ -35,7 +34,7 @@ namespace SnakeGame
             gameZone = new GameZone();
             this.Controls.Add(gameZone);
 
-            snake = new Snake();
+            snake = new Snake(this);
             this.Controls.Add(snake.body[0]);
             snake.body[0].BringToFront();
 
@@ -54,37 +53,33 @@ namespace SnakeGame
 
         private void MainTimer_Tick(object sender, EventArgs e)
         {
-            snake.body[0].Top += snake.VerVelocity * snake.Step;
-            snake.body[0].Left += snake.HorVelocity * snake.Step;
+            snake.Move();
             SnakeFoodCollision();
+            
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W)
+            switch (e.KeyCode)
             {
-                snake.HorVelocity = 0;
-                snake.VerVelocity = -1;
-            }
-            else if (e.KeyCode == Keys.A)
-            {
-                snake.HorVelocity = -1;
-                snake.VerVelocity = 0;
-            }
-            else if (e.KeyCode == Keys.D)
-            {
-                snake.HorVelocity = 1;
-                snake.VerVelocity = 0;
-            }
-            else if (e.KeyCode == Keys.S)
-            {
-                snake.HorVelocity = 0;
-                snake.VerVelocity = 1;
-            }
-            else if (e.KeyCode == Keys.P)
-            {
-                snake.HorVelocity = 0;
-                snake.VerVelocity = 0;
+                case Keys.Left: 
+                    snake.Turn(9);
+                    break;
+                case Keys.Right:
+                    snake.Turn(3);
+                    break;
+                case Keys.Down:
+                    snake.Turn(6);
+                    break;
+                case Keys.Up:
+                    snake.Turn(12);
+                    break;
+                case Keys.P:
+                    snake.Stop();
+                    break;
+                case Keys.Q:
+                    snake.Grow();
+                    break;
             }
         }
 
@@ -94,16 +89,10 @@ namespace SnakeGame
             {
                 food.Left = rand.Next(40, 420);
                 food.Top = rand.Next(40, 420);
-                snakePixelCounter++;
+                snake.Grow();
                 
             }
         }
 
-        private void AddSnakePixel()
-        {
-            this.Controls.Add(snake.body[snakePixelCounter]);
-            snake.body[snakePixelCounter].Left = snake.body[0].Left;
-            snake.body[snakePixelCounter].Top = snake.body[0].Top - 40;
-        }
     }
 }
