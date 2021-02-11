@@ -18,7 +18,7 @@ namespace SnakeGame
 
         private void InitializeFood()
         {
-            this.BackColor = Color.Green;
+            this.BackColor = Color.Red;
             this.Width = 20;
             this.Height = 20;
             this.Left = rand.Next(40, 420);

@@ -16,7 +16,8 @@ namespace SnakeGame
         Snake snake = null;
         Food food = null;
         Timer mainTimer = null;
-
+        Label labelScore = new Label();
+        int scoreCounter = 0;
 
         Random rand = new Random();
 
@@ -41,6 +42,11 @@ namespace SnakeGame
             food = new Food();
             this.Controls.Add(food);
             food.BringToFront();
+
+            labelScore.Left = 500;
+            labelScore.Top = 40;
+            labelScore.Text = "0";
+            this.Controls.Add(labelScore);
         }
 
         private void InitializeMainTimer()
@@ -85,12 +91,19 @@ namespace SnakeGame
 
         private void SnakeFoodCollision()
         {
+            var multiplier = 1;
             if (snake.body[0].Bounds.IntersectsWith(food.Bounds))
             {
                 food.Left = rand.Next(40, 420);
                 food.Top = rand.Next(40, 420);
                 snake.Grow();
-                
+                scoreCounter++;
+                labelScore.Text = scoreCounter.ToString();
+            }
+            if (scoreCounter == 5 * multiplier)
+            {
+                mainTimer.Interval = 500 - 25 * multiplier;
+                multiplier++;
             }
         }
 

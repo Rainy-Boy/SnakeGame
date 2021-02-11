@@ -31,14 +31,17 @@ namespace SnakeGame
         private void InitializeSnake()
         {
             PictureBox pixel = new PictureBox();
-            pixel.BackColor = Color.Red;
+            pixel.BackColor = Color.Green;
             pixel.Width = 20;
             pixel.Height = 20;
             pixel.Left = 200;
             pixel.Top = 200;
 
             body.Add(pixel);
-            
+            for (int i = 0; i < 2; i++)
+            {
+                this.Grow();
+            }
 
         }
 
@@ -83,7 +86,7 @@ namespace SnakeGame
         public void Grow()
         {
             PictureBox pixel = new PictureBox();
-            pixel.BackColor = Color.Red;
+            pixel.BackColor = Color.Green;
             pixel.Width = 20;
             pixel.Height = 20;
             pixel.Location = body[0].Location;
