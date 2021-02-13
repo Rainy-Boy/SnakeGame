@@ -30,19 +30,23 @@ namespace SnakeGame
 
         private void InitializeGame()
         {
+            //add event handlers
             this.KeyDown += Game_KeyDown;
 
+            //add gamezone
             gameZone = new GameZone();
             this.Controls.Add(gameZone);
 
+            //add snake
             snake = new Snake(this);
             this.Controls.Add(snake.body[0]);
             snake.body[0].BringToFront();
 
-            food = new Food();
-            this.Controls.Add(food);
-            food.BringToFront();
+            //add snake
+            food = new Food(this);
+            food.Render();
 
+            //add scoring label
             labelScore.Left = 500;
             labelScore.Top = 40;
             labelScore.Text = "0";
@@ -61,6 +65,7 @@ namespace SnakeGame
         {
             snake.Move();
             SnakeFoodCollision();
+            
             
         }
 
@@ -94,8 +99,12 @@ namespace SnakeGame
             var multiplier = 1;
             if (snake.body[0].Bounds.IntersectsWith(food.Bounds))
             {
-                food.Left = rand.Next(40, 420);
-                food.Top = rand.Next(40, 420);
+                food.Relocate();
+                while (FoodSnakeBodyCollision())
+                {
+                    food.Relocate();
+                }
+
                 snake.Grow();
                 scoreCounter++;
                 labelScore.Text = scoreCounter.ToString();
@@ -105,6 +114,35 @@ namespace SnakeGame
                 mainTimer.Interval = 500 - 25 * multiplier;
                 multiplier++;
             }
+        }
+
+        private bool FoodSnakeBodyCollision()
+        {
+            foreach(var pixel in snake.body)
+            {
+                if (pixel.Bounds.IntersectsWith(food.Bounds))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void SnakeSelfCollision()
+        {
+            for (int i = 1; i < snake.body.Count - 1; i++)
+            {
+                if (snake.body[i].Bounds.IntersectsWith(snake.body[0].Bounds))
+                {
+                    GameOver();
+                }
+            }
+        }
+
+        private void GameOver()
+        {
+            mainTimer.Stop();
+            MessageBox.Show("You lost");
         }
 
     }
